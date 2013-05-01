@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <name>mjpeg_server</name>
+  <version>1.1.0</version>
+  <description>A node that provides a MJPEG server which is able to subscribe to any ROS image stream.</description>
+
+  <maintainer email="rctoris@wpi.edu">Russell Toris</maintainer>
+  <author email="benjamin.pitzer@us.bosch.com">Benjamin Pitzer</author>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/mjpeg_server</url>
+  <url type="bugtracker">https://github.com/RobotWebTools/mjpeg_server/issues</url>
+  <url type="repository">https://github.com/WPI-RAIL/mjpeg_server</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>roslib</build_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_depend>image_transport</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>roslib</run_depend>
+  <run_depend>cv_bridge</run_depend>
+  <run_depend>image_transport</run_depend>
+</package>
