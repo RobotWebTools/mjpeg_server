@@ -2,7 +2,7 @@
  *
  * Software License Agreement (BSD License)
  *
- *  Copyright (c) 2010, Robert Bosch LLC.
+ *  Copyright (c) 2013, Robert Bosch LLC.
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@
 #include <ros/ros.h>
 #include <sensor_msgs/Image.h>
 #include <image_transport/image_transport.h>
-//#include <cv_bridge/CvBridge.h>
 #include <cv_bridge/cv_bridge.h>
 
 #include <boost/thread/mutex.hpp>
