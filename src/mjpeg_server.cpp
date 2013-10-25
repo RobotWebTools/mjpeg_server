@@ -620,7 +620,7 @@ void MJPEGServer::sendSnapshot(int fd, const char *parameter)
   unsigned char *frame = NULL;
   int frame_size = 0;
   char buffer[BUFFER_SIZE] = {0};
-  struct timeval timestamp;
+  double timestamp;
   //sensor_msgs::CvBridge image_bridge;
   //sensor_msgs::cv_bridge image_bridge;
 
@@ -714,7 +714,7 @@ void MJPEGServer::sendSnapshot(int fd, const char *parameter)
   }
 
   /* copy v4l2_buffer timeval to user space */
-  timestamp.tv_sec = ros::Time::now().toSec();
+  timestamp = ros::Time::now().toSec();
 
   memcpy(frame, &encoded_buffer[0], frame_size);
   ROS_DEBUG("got frame (size: %d kB)", frame_size / 1024);
@@ -723,9 +723,9 @@ void MJPEGServer::sendSnapshot(int fd, const char *parameter)
   sprintf(buffer, "HTTP/1.0 200 OK\r\n"
           "%s"
           "Content-type: image/jpeg\r\n"
-          "X-Timestamp: %d.%06d\r\n"
+          "X-Timestamp: %.06lf\r\n"
           "\r\n",
-          header.c_str(), (int)timestamp.tv_sec, (int)timestamp.tv_usec);
+          header.c_str(), (double)timestamp);
 
   /* send header and image now */
   if (write(fd, buffer, strlen(buffer)) < 0 || write(fd, frame, frame_size) < 0)
