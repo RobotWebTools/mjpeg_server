@@ -285,8 +285,22 @@ private:
    */
   void decodeParameter(const std::string& parameter, ParameterMap& parameter_map);
 
+  /**
+   * @brief increase the number of the subscribers of the specified topic
+   * @param topic name string
+   */
   void decreaseSubscriberCount(const std::string topic);
+
+  /**
+   * @brief decrease the number of the subscribers of the specified topic
+   * @param topic name string
+   */
   void increaseSubscriberCount(const std::string topic);
+
+  /**
+   * @brief remove ros::Subscriber if the number of the subscribers of the topic is equal to 0
+   * @param topic name string
+   */
   void unregisterSubscriberIfPossible(const std::string topic);
   
   ros::NodeHandle node_;
