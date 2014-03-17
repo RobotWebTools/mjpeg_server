@@ -474,6 +474,7 @@ void MJPEGServer::sendStream(int fd, const char *parameter)
     return;
 
   std::string topic = itp->second;
+  increaseSubscriberCount(topic);
   ImageBuffer* image_buffer = getImageBuffer(topic);
 
   ROS_DEBUG("preparing header");
@@ -613,6 +614,9 @@ void MJPEGServer::sendStream(int fd, const char *parameter)
   }
 
   free(frame);
+  decreaseSubscriberCount(topic);
+  unregisterSubscriberIfPossible(topic);
+
 }
 
 void MJPEGServer::sendSnapshot(int fd, const char *parameter)
@@ -633,6 +637,7 @@ void MJPEGServer::sendSnapshot(int fd, const char *parameter)
     return;
 
   std::string topic = itp->second;
+  increaseSubscriberCount(topic);
   ImageBuffer* image_buffer = getImageBuffer(topic);
 
   /* wait for fresh frames */
@@ -735,6 +740,8 @@ void MJPEGServer::sendSnapshot(int fd, const char *parameter)
   }
 
   free(frame);
+  decreaseSubscriberCount(topic);
+  unregisterSubscriberIfPossible(topic);
 }
 
 void MJPEGServer::client(int fd)
@@ -879,7 +886,6 @@ void MJPEGServer::client(int fd)
 
   close(fd);
   freeRequest(&req);
-
   ROS_INFO("Disconnecting HTTP client");
   return;
 }
@@ -1064,10 +1070,16 @@ void MJPEGServer::decreaseSubscriberCount(const std::string topic)
   {
     if (image_subscribers_count_[topic] == 1) {
       image_subscribers_count_.erase(it);
+      ROS_INFO("no subscribers for %s", topic.c_str());
     }
     else if (image_subscribers_count_[topic] > 0) {
       image_subscribers_count_[topic] = image_subscribers_count_[topic] - 1;
+      ROS_INFO("%lu subscribers for %s", image_subscribers_count_[topic], topic.c_str());
     }
+  }
+  else
+  {
+    ROS_INFO("no subscribers counter for %s", topic.c_str());
   }
 }
 
@@ -1077,11 +1089,12 @@ void MJPEGServer::increaseSubscriberCount(const std::string topic)
   ImageSubscriberCountMap::iterator it = image_subscribers_count_.find(topic);
   if (it == image_subscribers_count_.end())
   {
-    image_subscribers_count_[topic] = 1;
+    image_subscribers_count_.insert(ImageSubscriberCountMap::value_type(topic, 1));
   }
   else {
     image_subscribers_count_[topic] = image_subscribers_count_[topic] + 1;
   }
+  ROS_INFO("%lu subscribers for %s", image_subscribers_count_[topic], topic.c_str());
 }
 
 void MJPEGServer::unregisterSubscriberIfPossible(const std::string topic)
@@ -1094,6 +1107,7 @@ void MJPEGServer::unregisterSubscriberIfPossible(const std::string topic)
     ImageSubscriberMap::iterator sub_it = image_subscribers_.find(topic);
     if (sub_it != image_subscribers_.end())
     {
+      ROS_INFO("Unsubscribing from %s", topic.c_str());
       image_subscribers_.erase(sub_it);
     }
   }
