@@ -1056,6 +1056,48 @@ void MJPEGServer::stop()
   stop_requested_ = true;
 }
 
+void MJPEGServer::decreaseSubscriberCount(const std::string topic)
+{
+  boost::unique_lock<boost::mutex> lock(image_maps_mutex_);
+  ImageSubscriberCountMap::iterator it = image_subscribers_count_.find(topic);
+  if (it != image_subscribers_count_.end())
+  {
+    if (image_subscribers_count_[topic] == 1) {
+      image_subscribers_count_.erase(it);
+    }
+    else if (image_subscribers_count_[topic] > 0) {
+      image_subscribers_count_[topic] = image_subscribers_count_[topic] - 1;
+    }
+  }
+}
+
+void MJPEGServer::increaseSubscriberCount(const std::string topic)
+{
+  boost::unique_lock<boost::mutex> lock(image_maps_mutex_);
+  ImageSubscriberCountMap::iterator it = image_subscribers_count_.find(topic);
+  if (it == image_subscribers_count_.end())
+  {
+    image_subscribers_count_[topic] = 1;
+  }
+  else {
+    image_subscribers_count_[topic] = image_subscribers_count_[topic] + 1;
+  }
+}
+
+void MJPEGServer::unregisterSubscriberIfPossible(const std::string topic)
+{
+  boost::unique_lock<boost::mutex> lock(image_maps_mutex_);
+  ImageSubscriberCountMap::iterator it = image_subscribers_count_.find(topic);
+  if (it == image_subscribers_count_.end() ||
+      image_subscribers_count_[topic] == 0)
+  {
+    ImageSubscriberMap::iterator sub_it = image_subscribers_.find(topic);
+    if (sub_it != image_subscribers_.end())
+    {
+      image_subscribers_.erase(sub_it);
+    }
+  }
+}
 }
 
 int main(int argc, char** argv)
