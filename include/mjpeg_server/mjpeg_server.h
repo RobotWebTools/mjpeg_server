@@ -147,6 +147,7 @@ public:
 private:
   typedef std::map<std::string, ImageBuffer*> ImageBufferMap;
   typedef std::map<std::string, image_transport::Subscriber> ImageSubscriberMap;
+  typedef std::map<std::string, size_t> ImageSubscriberCountMap;
   typedef std::map<std::string, std::string> ParameterMap;
 
   std::string header;
@@ -284,6 +285,24 @@ private:
    */
   void decodeParameter(const std::string& parameter, ParameterMap& parameter_map);
 
+  /**
+   * @brief increase the number of the subscribers of the specified topic
+   * @param topic name string
+   */
+  void decreaseSubscriberCount(const std::string topic);
+
+  /**
+   * @brief decrease the number of the subscribers of the specified topic
+   * @param topic name string
+   */
+  void increaseSubscriberCount(const std::string topic);
+
+  /**
+   * @brief remove ros::Subscriber if the number of the subscribers of the topic is equal to 0
+   * @param topic name string
+   */
+  void unregisterSubscriberIfPossible(const std::string topic);
+  
   ros::NodeHandle node_;
   image_transport::ImageTransport image_transport_;
   int port_;
@@ -296,6 +315,7 @@ private:
 
   ImageBufferMap image_buffers_;
   ImageSubscriberMap image_subscribers_;
+  ImageSubscriberCountMap image_subscribers_count_;
   boost::mutex image_maps_mutex_;
 
 };
