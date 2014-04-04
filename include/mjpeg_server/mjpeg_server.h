@@ -2,7 +2,7 @@
  *
  * Software License Agreement (BSD License)
  *
- *  Copyright (c) 2013, Robert Bosch LLC.
+ *  Copyright (c) 2014, Robert Bosch LLC.
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without

@@ -1,0 +1,6 @@
+/**
+\mainpage
+
+\b A ROS Node to Stream Image Topics Via a MJPEG Server
+mjpeg_server converts ROS image streams into an MJPEG stream and streams them via a socket connection.
+*/
