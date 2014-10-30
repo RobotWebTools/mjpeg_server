@@ -1118,6 +1118,9 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "mjpeg_server");
 
+  ROS_WARN("WARNING -- mjpeg_server IS NOW DEPRECATED.");
+  ROS_WARN("PLEASE SEE https://github.com/RobotWebTools/web_video_server.");
+
   ros::NodeHandle nh;
   mjpeg_server::MJPEGServer server(nh);
   server.spin();

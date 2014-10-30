@@ -2,6 +2,12 @@
 Changelog for package mjpeg_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.1.2 (2014-10-30)
+------------------
+* ROS_WARN added
+* DEPRECATION NOTICE
+* Contributors: Russell Toris
+
 1.1.1 (2014-04-04)
 ------------------
 * cleanup for indigo

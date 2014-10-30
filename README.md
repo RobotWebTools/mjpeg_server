@@ -1,3 +1,6 @@
+## DEPRECATION NOTICE
+mjpeg_server has been replaced by [web_video_server](https://github.com/RobotWebTools/web_video_server).
+
 mjpeg_server [![Build Status](https://api.travis-ci.org/RobotWebTools/mjpeg_server.png)](https://travis-ci.org/RobotWebTools/mjpeg_server)
 ============
 
